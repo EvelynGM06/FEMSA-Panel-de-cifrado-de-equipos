@@ -52,9 +52,9 @@ Si descargaste un `.zip`, **extráelo completo** antes de usarlo:
  
 ## Cómo abrirlo en Mac
  
-> ✅ **Navegador recomendado: Google Chrome.**
+> **Navegador recomendado: Google Chrome.**
 >
-> ⚠️ **Evita Safari.** En Safari, el botón «Generar PDF» de la pestaña **Reportes** abre el cuadro de impresión
+> **Evita usar Safari.** En Safari, el botón «Generar PDF» de la pestaña **Reportes** abre el cuadro de impresión
 > sin la opción **Guardar como PDF**, así que no se puede descargar el reporte. Pasa lo mismo con el
 > `panel_cifrado_AAAA-MM.html` descargado: ábrelo con **clic derecho → Abrir con → Google Chrome**, no con doble clic
 > si Safari es tu navegador predeterminado.
