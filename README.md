@@ -39,8 +39,9 @@ Si descargaste un `.zip`, **extráelo completo** antes de usarlo:
 3. Se abre una ventana negra. **La primera vez tarda unos minutos** (instala lo necesario). Déjala abierta.
 4. Se abre el navegador con la aplicación (`http://localhost:8501`). Si no se abre solo, copia esa dirección en Chrome.
 5. **No cierres la ventana negra mientras lo usas.** Para apagar el panel, ciérrala.
+
 | Si pasa esto | Haz esto |
-|---|---|
+|--------------|-----------|
 | `No such file or directory: requirements.txt` | Abriste el `.bat` dentro del `.zip`. Extrae todo y ábrelo desde la carpeta extraída. |
 | «no encuentro Python» | Instala Python (punto 1) y vuelve a abrir el `.bat`. |
 | `ERROR E11` | Tu Python es menor a 3.10. Instala uno nuevo, borra la carpeta `.venv` y abre el `.bat` otra vez. |
@@ -142,10 +143,11 @@ Para cerrar el panel: en la Terminal, `kill %1` (o cierra la ventana de la Termi
  
 ## 4. Cómo se usa
  
-1. **Paso 1:** sube tu Excel (puedes subir uno o varios; cada archivo es un mes).
-2. **Paso 2:** revisa que el mes detectado sea el correcto. Si algún archivo trae un problema, aparece en rojo con lo que hay que arreglar.
-3. Clic en **Procesar**. Cuando termine, verás el panel, el resumen y las descargas.
-El Excel tiene que cumplir el formato de la sección 5, si no, la aplicación lo rechaza.
+**Paso 1:** sube tu Excel (puedes subir uno o varios; cada archivo es un mes).
+
+**Paso 2:** revisa que el mes detectado sea el correcto. Si algún archivo trae un problema, aparece en rojo con lo que hay que arreglar.
+
+**Paso 3:** Clic en **Procesar**. Cuando termine, verás el panel, el resumen y las descargas. El Excel tiene que cumplir el formato de la sección 5, si no, la aplicación lo rechaza.
  
 ¿Solo quieres ver cómo se ve? En la barra lateral, **«Datos de prueba» → «Cargar datos demo»** usa datos inventados.
  
@@ -156,6 +158,7 @@ Para que funcione, el archivo tiene que cumplir esto:
 - Formato **`.xlsx`**, con los equipos en la **primera hoja**.
 - Los **encabezados van en la fila 3** (las filas 1 y 2 pueden tener título o estar vacías).
 - Las columnas deben llamarse **exactamente** como en esta tabla (el orden no importa). Son **obligatorias** las columnas 1 a 14 y 16 a 19 (18 en total); la 15 y de la 20 a la 25 son **opcionales** y pueden faltar:
+
 | # | Columna | Qué trae |
 |---|---|---|
 | 1 | `EquipoID` | Identificador del equipo. No puede repetirse |
