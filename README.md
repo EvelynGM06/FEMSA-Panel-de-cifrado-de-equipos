@@ -28,7 +28,7 @@ Si descargaste un `.zip`, **extráelo completo** antes de usarlo:
  
 - Windows: clic derecho en el `.zip` → **Extraer todo…**
 - Mac: doble clic en el `.zip`.
-⚠️ **No abras nada desde dentro del `.zip`.** Si lo haces, sale el error `No such file or directory: requirements.txt`.
+- ⚠️ **No abras nada desde dentro del `.zip`.** Si lo haces, sale el error `No such file or directory: requirements.txt`.
  
 ---
  
