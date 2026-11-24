@@ -1,0 +1,497 @@
+/* ==========================================================================
+   Panel de cifrado de equipos · estilos
+   Implementa DESIGN_SYSTEM_consolidado.md v1.0 SOLO con CSS.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* Base */
+  --fondo: #FAF7F2;
+  --tarjeta: #FFFFFF;
+  --borde: #E7DCCB;
+  --borde-suave: #EFE8DC;
+  --beige-claro: #F1EADF;
+
+  /* Texto */
+  --tinta: #242424;
+  --tinta2: #5C5C58;
+  --tinta3: #6E6E69;
+
+  /* Marca */
+  --guinda: #7A1F33;
+  --guinda-oscuro: #5A1627;
+  --guinda-claro: #F6E4E8;
+  --acento-femsa: #9D2736;
+
+  /* Aliases de compatibilidad con la plantilla anterior */
+  --marino: var(--guinda);
+  --azul: var(--guinda);
+  --azul-claro: var(--guinda-claro);
+
+  /* Estados y categorías de datos */
+  --cifrado: #2F6FD6;
+  --sin-cifrar: #C73030;
+  --sin-dato: #9B9B97;
+  --ok: #1F7A3E;
+  --ambar: #F2B31B;
+  --ambar-grafica: #B97A00;   /* ámbar para barras y donas: contraste 3.6:1 sobre blanco (el --ambar queda para el semáforo) */
+  --naranja: #EA6A35;
+  --gris: #9B9B97;
+
+  /* Aliases semánticos (el JavaScript usa var(--rojo), var(--verde) y var(--ambar)) */
+  --rojo: var(--sin-cifrar);
+  --rojo-oscuro: #242424;
+  --verde: var(--ok);
+
+  /* Trama para información no disponible */
+  --trama: repeating-linear-gradient(45deg, #8f8f8b 0 2px, #d8d8d4 2px 5px);
+
+  /* Espaciado (múltiplos de 4 px) */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+
+  /* Radios */
+  --r1: 4px;
+  --r2: 8px;
+  --r3: 12px;
+  --r4: 24px;
+  --r-pill: 999px;
+  --radio: var(--r3);
+
+  /* Tipografía (sin fuentes externas: funciona sin internet) */
+  --fuente: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Foco visible */
+  --foco: 2px solid var(--guinda);
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+  font: 14px/1.45 var(--fuente);
+  -webkit-font-smoothing: antialiased;
+}
+.num { font-variant-numeric: tabular-nums; }
+
+/* Foco visible en todo control interactivo (no se quita el foco nativo del navegador) */
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--foco);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Header y franja de incidencias
+   -------------------------------------------------------------------------- */
+header.top {
+  background: var(--guinda);
+  color: #fff;
+  padding: var(--s3) var(--s5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  align-items: center;
+  justify-content: space-between;
+}
+header.top h1 { font-size: 20px; margin: 0; font-weight: 700; }
+.chips { display: flex; gap: var(--s2); flex-wrap: wrap; }
+.chip {
+  border: 1px solid rgba(255, 255, 255, .55);
+  border-radius: var(--r-pill);
+  padding: var(--s1) var(--s3);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.chip.dummy { background: var(--ambar); color: var(--tinta); border-color: var(--ambar); font-weight: 700; }
+
+/* Franja fija: no se puede cerrar ni silenciar (requisito del cliente) */
+.incidencias {
+  background: var(--tinta);
+  color: #fff;
+  border-left: 4px solid var(--sin-cifrar);
+  padding: var(--s2) var(--s5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s5);
+  align-items: center;
+  font-size: 13.5px;
+}
+.incidencias b { font-size: 15px; }
+.incidencias > span:first-child b { display: inline-block; }
+.incidencias > span:first-child b::first-letter { color: var(--ambar); }   /* icono de advertencia */
+.incidencias .fija { margin-left: auto; color: rgba(255, 255, 255, .85); font-size: 12.5px; }
+
+/* --------------------------------------------------------------------------
+   4. Estructura, filtros y controles
+   -------------------------------------------------------------------------- */
+main { max-width: 1180px; margin: 0 auto; padding: var(--s4) var(--s4) 40px; }
+.filtros { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: flex-end; }
+
+/* Filtro = menú desplegable con casillas (clic o Espacio para marcar; sin Ctrl/Shift) */
+.filtro { position: relative; flex: 1; min-width: 140px; }
+.filtro summary {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 48px;
+  padding: 6px 32px 6px var(--s3);
+  border: 1px solid var(--borde);
+  border-radius: var(--r2);
+  background: var(--tarjeta);
+  cursor: pointer;
+  position: relative;
+}
+.filtro summary::-webkit-details-marker { display: none; }
+.filtro summary::after {   /* flecha */
+  content: '';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--tinta2);
+  border-bottom: 2px solid var(--tinta2);
+  transform: translateY(-70%) rotate(45deg);
+}
+.filtro[open] summary::after { transform: translateY(-20%) rotate(-135deg); }
+.filtro summary:hover { border-color: var(--guinda); }
+.filtro .et { font-size: 12px; color: var(--tinta2); }
+.filtro .valor { font-size: 14px; color: var(--tinta); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.filtro.activo summary { border-color: var(--guinda); background: var(--guinda-claro); }
+.filtro.activo .valor { color: var(--guinda-oscuro); font-weight: 600; }
+.filtro .opciones {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 20;
+  min-width: 100%;
+  width: max-content;
+  max-width: min(340px, calc(100vw - 32px));
+  max-height: min(420px, 60vh);   /* caben los 11 países sin scroll */
+  overflow: auto;
+  margin: 0;
+  padding: var(--s1);
+  border: 1px solid var(--borde);
+  border-radius: var(--r2);
+  background: var(--tarjeta);
+  box-shadow: 0 8px 24px rgba(36, 36, 36, .12);
+}
+.filtro:nth-last-of-type(-n+2) .opciones { left: auto; right: 0; }   /* los de la derecha abren hacia la izquierda */
+.filtro .opciones label {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 34px;
+  padding: 6px var(--s2);
+  border-radius: var(--r1);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--tinta);
+}
+.filtro .opciones label:hover { background: var(--beige-claro); }
+.filtro .opciones input { accent-color: var(--guinda); width: 16px; height: 16px; margin: 0; flex: none; }
+.filtro summary { -webkit-tap-highlight-color: transparent; }
+@media (min-width: 768px) { .filtro[data-id="efectivo"] { min-width: 200px; } }   /* la etiqueta larga cabe en una línea */
+select, input[type=search] {
+  font: inherit;
+  min-height: 36px;
+  padding: 7px var(--s3);
+  border: 1px solid var(--borde);
+  border-radius: var(--r2);
+  background: var(--tarjeta);
+  color: var(--tinta);
+}
+button { font: inherit; cursor: pointer; }
+
+/* Botón secundario (Quitar filtros, Descargar CSV) */
+.btn {
+  min-height: 36px;
+  border: 1px solid var(--guinda);
+  color: var(--guinda);
+  background: var(--tarjeta);
+  border-radius: var(--r2);
+  padding: 6px var(--s4);
+}
+.btn:hover { background: var(--guinda-claro); }
+.btn:active { background: var(--guinda-claro); border-color: var(--guinda-oscuro); color: var(--guinda-oscuro); }
+.btn:disabled { opacity: .4; cursor: not-allowed; background: var(--tarjeta); }
+.btn:disabled:hover { background: var(--tarjeta); }
+
+.contador { text-align: right; color: var(--tinta2); font-size: 13px; margin: 6px 0 var(--s3); }
+
+/* --------------------------------------------------------------------------
+   5. Pestañas
+   -------------------------------------------------------------------------- */
+nav.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 1px solid var(--borde);
+  padding-bottom: var(--s3);
+  margin-bottom: var(--s5);
+}
+nav.tabs .fila { display: flex; flex-wrap: wrap; gap: var(--s1); align-items: center; }
+nav.tabs .grupo { font-size: 12px; letter-spacing: .08em; color: var(--tinta3); text-transform: uppercase; min-width: 96px; flex-shrink: 0; white-space: nowrap; }
+nav.tabs button {
+  min-height: 36px;
+  border: 0;
+  background: none;
+  padding: 7px var(--s3);
+  border-radius: var(--r2);
+  color: var(--tinta);
+  font-size: 14px;
+}
+nav.tabs .fila.sec button { font-size: 13.5px; color: var(--tinta); }
+nav.tabs button:hover { background: var(--beige-claro); }
+nav.tabs button.activa,
+nav.tabs .fila.sec button.activa { background: var(--guinda); color: #fff; }   /* la 2.ª regla evita que el color de las secundarias gane */
+
+/* --------------------------------------------------------------------------
+   6. Títulos, rejilla y tarjetas
+   -------------------------------------------------------------------------- */
+h2 { font-size: 24px; margin: 0; font-weight: 700; color: var(--guinda); }
+.pregunta { color: var(--tinta2); margin: var(--s1) 0 var(--s4); font-size: 15px; }
+.grid { display: grid; gap: var(--s4); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.g2 { grid-template-columns: repeat(2, 1fr); }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1023px) { .g4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 860px)  { .g2, .g3 { grid-template-columns: 1fr; } }
+@media (max-width: 767px)  { .g4 { grid-template-columns: 1fr; } }
+@media (max-width: 767px)  { button, select, input[type=search] { min-height: 44px; } }
+
+.card {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: var(--s4);
+  min-width: 0;
+}
+.card h3 { font-size: 16px; margin: 0 0 var(--s3); font-weight: 600; }
+
+/* KPIs */
+.kpi .t { color: var(--tinta2); font-size: 14px; }
+.kpi .v { font-size: 36px; font-weight: 700; line-height: 1.15; margin: var(--s1) 0 2px; }
+/* Tarjetas angostas (p. ej. 4 indicadores dentro de media pantalla): el número se achica en vez de salirse de la tarjeta */
+#vista .grid.g4 > .card.kpi { container-type: inline-size; }
+#vista .grid.g4 > .card.kpi .v { font-size: clamp(22px, 17cqi, 36px); }
+.kpi .s { color: var(--tinta2); font-size: 13px; }
+.v.rojo { color: var(--sin-cifrar); }
+.v.gris { color: var(--tinta2); }
+
+.mt { margin-top: var(--s4); }
+.nota { color: var(--tinta2); font-size: 12.5px; margin-top: 10px; }
+
+/* --------------------------------------------------------------------------
+   7. Barras, leyendas y colores de estado
+   -------------------------------------------------------------------------- */
+.barra { display: flex; height: 30px; border-radius: var(--r1); overflow: hidden; gap: 2px; background: var(--tarjeta); }
+.seg { height: 100%; min-width: 3px; }
+.c-cif { background: var(--cifrado); }          /* azul = cifrado (no usa el alias --azul) */
+.c-noc { background: var(--sin-cifrar); }
+.c-sd  { background: var(--trama); }            /* trama = sin dato */
+.c-mdm { background: var(--naranja); }
+.c-amb { background: var(--ambar); }
+.c-desv { background: var(--naranja); }        /* cifrado con desviación */
+.c-sinval { background: var(--ambar-grafica); } /* cifrado sin validar configuración */
+.c-ver { background: var(--ok); }
+.leyenda { display: flex; flex-wrap: wrap; gap: 6px var(--s4); margin-top: 10px; font-size: 13px; color: var(--tinta); }
+.leyenda i { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+
+.hbar { display: grid; grid-template-columns: fit-content(45%) minmax(60px, 1fr) auto; gap: var(--s2) var(--s3); align-items: center; font-size: 13.2px; }
+.hbar .pista { height: 15px; position: relative; }
+.hbar .relleno { height: 100%; border-radius: 0 var(--r1) var(--r1) 0; min-width: 2px; }
+.hbar .resaltada { outline: 2px solid var(--tinta); outline-offset: 1px; border-radius: 3px; }
+.hbar .et { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hbar .val { text-align: right; color: var(--tinta); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* --------------------------------------------------------------------------
+   8. Tablas, paginación y semáforo
+   -------------------------------------------------------------------------- */
+.tabla { overflow-x: auto; }
+/* Tabla más ancha que su tarjeta: enfocable (lo marca marcarDesplazables) y con sombra en el
+   borde que tiene columnas ocultas; las capas "local" tapan la sombra al llegar al extremo */
+.tabla.desborda {
+  background:
+    linear-gradient(to right, var(--tarjeta) 30%, transparent) left / 32px 100% no-repeat local,
+    linear-gradient(to left, var(--tarjeta) 30%, transparent) right / 32px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.2), transparent) left / 12px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), transparent) right / 12px 100% no-repeat scroll;
+}
+.tabla.desborda:focus-visible { outline-offset: 2px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th {
+  font-weight: 600;
+  color: var(--tinta2);
+  text-align: left;
+  font-size: 12.5px;
+  padding: var(--s2) var(--s3);
+  border-bottom: 1px solid var(--borde);
+  white-space: nowrap;
+}
+td { padding: var(--s2) var(--s3); border-bottom: 1px solid var(--borde-suave); vertical-align: top; }
+table.nowrap td { white-space: nowrap; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.sub { color: var(--tinta3); }
+.paginador { display: flex; gap: var(--s3); align-items: center; margin-top: var(--s3); color: var(--tinta2); font-size: 13px; }
+.paginador button { min-height: 32px; border: 1px solid var(--borde); background: var(--tarjeta); color: var(--tinta); border-radius: var(--r2); padding: 3px var(--s3); }
+.paginador button:hover:not(:disabled) { background: var(--beige-claro); }
+.paginador button:disabled { opacity: .4; cursor: not-allowed; }
+.acciones { display: flex; gap: var(--s3); align-items: center; flex-wrap: wrap; margin-bottom: var(--s2); color: var(--tinta2); font-size: 13px; }
+.semaforo i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
+
+.matriz td.n { font-size: 14px; }
+.matriz td.alerta-r { outline: 2px solid var(--sin-cifrar); outline-offset: -2px; font-weight: 700; }
+.matriz td.alerta-a { outline: 2px solid var(--ambar); outline-offset: -2px; font-weight: 700; }
+.calor { display: inline-block; min-width: 54px; text-align: right; padding: 2px 6px; border-radius: var(--r1); color: var(--tinta); }
+
+/* --------------------------------------------------------------------------
+   9. Glosario, estados vacíos y pie
+   -------------------------------------------------------------------------- */
+dl.glosario dt { font-weight: 600; margin-top: var(--s3); }
+dl.glosario dd { margin: 2px 0 0; color: var(--tinta2); }
+.vacio { color: var(--tinta3); padding: var(--s4) 0; }
+.corchete { position: relative; height: 16px; margin-top: 2px; font-size: 12px; color: var(--tinta2); }
+footer { color: var(--tinta3); font-size: 12.5px; text-align: center; margin-top: 30px; }
+
+/* --------------------------------------------------------------------------
+   10. Elementos nuevos de la plantilla de Diana
+   (botones dentro de tablas, contexto de incidencia, <code>)
+   -------------------------------------------------------------------------- */
+
+/* Detalle abierto desde una incidencia: ruta + etiqueta visible */
+.migas { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; font-size: 13px; color: var(--tinta2); margin: 0 0 var(--s3); }
+.migas a { color: var(--guinda); text-underline-offset: 2px; }
+.migas [aria-current] { color: var(--tinta); font-weight: 600; }
+.contexto-inc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s4);
+  padding: var(--s3) var(--s4);
+  margin-bottom: var(--s3);
+  background: var(--guinda-claro);
+  border: 1px solid var(--guinda);
+  border-left-width: 4px;
+  border-radius: var(--r2);
+}
+.contexto-inc .etq { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--guinda-oscuro); }
+.contexto-inc .crit { font-size: 13px; color: var(--tinta2); }
+.contexto-inc .btn { margin-left: auto; }
+
+/* Botón "Ver N equipos" (pestaña Incidencias) = botón secundario */
+td button[data-ir-incidencia] {
+  min-height: 32px;
+  border: 1px solid var(--guinda);
+  color: var(--guinda);
+  background: var(--tarjeta);
+  border-radius: var(--r2);
+  padding: 4px var(--s3);
+  white-space: nowrap;
+}
+td button[data-ir-incidencia]:hover { background: var(--guinda-claro); }
+
+/* Nombre de país clicable (tabla de países) = enlace */
+td button[data-ir-pais] {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--guinda);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-align: left;
+}
+td button[data-ir-pais]:hover { color: var(--guinda-oscuro); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  background: var(--beige-claro);
+  padding: 1px 6px;
+  border-radius: var(--r1);
+}
+@media (max-width: 767px) {
+  .filtros { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+  .filtro { min-width: 0; }
+  .filtro[open] { grid-column: 1 / -1; }
+  .filtro .opciones { position: static; width: auto; max-width: none; max-height: none; box-shadow: none; margin-top: var(--s1); }
+  .filtro .opciones label { min-height: 44px; }
+  #limpiar { grid-column: 1 / -1; }
+  /* Incidencias como tarjetas: el botón "Ver N equipos" queda a la vista sin desplazar */
+  table.tabla-inc thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  table.tabla-inc tr { display: grid; grid-template-columns: 1fr auto; gap: var(--s1) var(--s3); padding: var(--s3) 0; border-bottom: 1px solid var(--borde-suave); }
+  table.tabla-inc td { display: block; padding: 0; border: 0; }
+  table.tabla-inc td:nth-child(1) { font-weight: 600; }
+  table.tabla-inc td:nth-child(2) { color: var(--tinta2); font-size: 13px; }
+  table.tabla-inc td:nth-child(2)::before { content: 'Prioridad '; }
+  table.tabla-inc td:nth-child(3) { grid-column: 1 / -1; color: var(--tinta2); font-size: 13px; }
+  table.tabla-inc td:nth-child(4) { grid-column: 1 / -1; color: var(--tinta2); font-size: 13px; }
+  table.tabla-inc td:nth-child(4)::before { content: 'Variación: '; }
+  table.tabla-inc td:nth-child(5) { grid-column: 1 / -1; }
+  td button[data-ir-incidencia], td button[data-ir-pais] { min-height: 44px; }
+}
+
+/* --------------------------------------------------------------------------
+   Barra de 5 categorías y donas (retro FEMSA)
+   -------------------------------------------------------------------------- */
+.barra.cinco .seg { min-width: 10px; }                    /* los segmentos finos (0.9 %) siguen visibles */
+.resumen-cifrado { margin: var(--s2) 0 0; color: var(--tinta); font-size: 13.2px; }
+.dona-wrap { display: flex; align-items: center; gap: var(--s5); flex-wrap: wrap; }
+.dona-wrap svg { width: 168px; height: 168px; flex: none; }
+.dona-wrap text { font-family: inherit; }
+.dona-leyenda { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); font-size: 13.2px; min-width: 0; }
+.dona-leyenda li { display: flex; align-items: center; gap: var(--s2); }
+.dona-leyenda i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; flex: none; }
+.dona-leyenda b { font-variant-numeric: tabular-nums; }
+/* Barras apiladas al 100 % (cifrado por país y por recencia) */
+.pilas { display: grid; grid-template-columns: fit-content(34%) minmax(80px, 1fr) auto; gap: var(--s2) var(--s3); align-items: center; font-size: 13.2px; }
+.pilas .et { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pilas .et .sub, .pilas .val .sub { color: var(--tinta2); font-size: 12px; }
+.pilas .pila { display: flex; height: 16px; gap: 1px; border-radius: var(--r1); overflow: hidden; background: var(--tarjeta); }
+.pilas .seg { min-width: 3px; }
+.pilas .val { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.leyenda-sup { margin: 0 0 var(--s3); }
+
+/* Resumen: «Dónde actuar primero» y cambio contra el corte anterior */
+.c-sem-amb { background: var(--ambar); }
+.actuar { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s5); align-items: center; }
+.actuar .dona-wrap { flex-direction: column; align-items: flex-start; gap: var(--s3); }
+.actuar .dona-wrap svg { width: 132px; height: 132px; }
+.actuar .acciones { margin: var(--s3) 0 0; }
+.var-bien { color: var(--ok); font-weight: 600; white-space: nowrap; }
+.var-mal { color: var(--sin-cifrar); font-weight: 600; white-space: nowrap; }
+@media (max-width: 760px) { .actuar { grid-template-columns: 1fr; } }
+
+/* Resumen: fila de indicadores con el principal y los 3 hallazgos */
+.g-hallazgos { grid-template-columns: 1.3fr 1fr 1fr 1fr; align-items: stretch; }
+.kpi.hero { border-left: 4px solid var(--guinda, #7B1D34); }
+.kpi.hero .v { font-size: 56px; line-height: 1.05; }
+.kpi.hero .delta { margin-top: var(--s2); font-size: 13px; }
+.kpi.hallazgo .v { font-size: 40px; }
+.kpi.hallazgo .s { max-width: 30ch; line-height: 1.4; }
+.kpi .v.ambar { color: var(--ambar-grafica); }
+details.leer { margin-top: var(--s2); }
+details.leer summary { cursor: pointer; font-size: 13px; color: var(--tinta2); }
+details.leer .nota { margin-top: var(--s2); }
+.actuar table { table-layout: fixed; }
+.actuar th:nth-child(1), .actuar td:nth-child(1) { width: 26%; }
+.actuar th:nth-child(2), .actuar td:nth-child(2) { width: 18%; }
+@media (max-width: 1023px) { .g-hallazgos { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 767px)  { .g-hallazgos { grid-template-columns: 1fr; } }

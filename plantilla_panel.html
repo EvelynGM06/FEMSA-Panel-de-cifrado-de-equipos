@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel de cifrado de equipos</title>
+<!--
+  Plantilla del panel. NO se abre directamente: panel.py la llena con los datos
+  y genera panel_cifrado_AAAA-MM.html (un solo archivo, funciona sin internet).
+-->
+<style>
+/*__CSS__*/
+/*__CSS_REPORTES__*/
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Panel de cifrado de equipos</h1>
+  <div class="chips" id="chips"></div>
+</header>
+<div class="incidencias" id="incidencias" role="status"></div>
+<main>
+  <div class="filtros" id="filtros"></div>
+  <div class="contador" id="contador"></div>
+  <nav class="tabs" id="tabs"></nav>
+  <section id="vista" role="tabpanel" aria-live="polite"></section>
+  <footer id="pie"></footer>
+</main>
+
+<script>
+const DATOS = /*__DATOS__*/null;
+/*__JS__*/
+/*__JS_REPORTES__*/
+/*__JS_REPORTE_EJECUTIVO__*/
+/*__JS_REPORTE_TECNICO__*/
+
+/* Arranque: va siempre al final, después de todos los módulos */
+let inicial = ''; try { inicial = location.hash.slice(1); } catch (_) {}
+if (PESTANAS.some(t => t.id === inicial)) ESTADO.tab = inicial;
+window.addEventListener('hashchange', () => { let h = ''; try { h = location.hash.slice(1); } catch (_) {} if (PESTANAS.some(t => t.id === h) && h !== ESTADO.tab) { ESTADO.tab = h; pintar(); } });
+pintarFiltros();
+pintar();
+document.getElementById('pie').textContent = `Generado por panel.py el ${META.generado} a partir de ${META.archivo}. Funciona sin internet; los datos no salen de este archivo. Confidencial — uso interno.`;
+</script>
+</body>
+</html>

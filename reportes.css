@@ -1,0 +1,76 @@
+/* reportes.css · Integrante 4 (T3): estilos de la pestaña Reportes y de impresión (@media print).
+ * Se incrusta después de estilos.css. Prefijos para no chocar:
+ *   .rep-       común (Integrante 4)   ·   .rep-ej-  ejecutivo (3)   ·   .rep-tec-  técnico (2)
+ */
+
+/* ---- Pestaña Reportes (pantalla) ---- */
+.rep-alcance { border: 0; margin: 0; padding: 0; display: grid; gap: var(--s2); }
+.rep-opcion { display: flex; gap: var(--s2); align-items: flex-start; }
+.rep-opcion input { margin-top: 3px; }
+.rep-lista-filtros { margin: var(--s3) 0 0; padding-left: var(--s5); color: var(--tinta2); font-size: 13px; }
+.rep-pasos { margin: 0; padding-left: var(--s5); display: grid; gap: var(--s2); }
+.rep-boton { font-weight: 600; }
+
+/* El reporte vive oculto en pantalla; solo aparece al imprimir */
+#reporte { display: none; }
+
+@media print {
+  .rep .kpi.hero .v { font-size: 34px; }
+  .rep .kpi.hallazgo .v { font-size: 28px; }
+  @page { size: A4; margin: 12mm 11mm 16mm; @bottom-left { content: "Confidencial — uso interno"; font: 9px sans-serif; color: #555; } @bottom-right { content: "Página " counter(page) " de " counter(pages); font: 9px sans-serif; color: #555; } }
+  @page tecnico { size: A4 landscape; margin: 10mm 10mm 14mm; @bottom-left { content: "Confidencial — uso interno"; font: 9px sans-serif; color: #555; } @bottom-right { content: "Página " counter(page) " de " counter(pages); font: 9px sans-serif; color: #555; } }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { background: #fff !important; }
+  body.imprimiendo > *:not(#reporte) { display: none !important; }
+  body.imprimiendo #reporte { display: block; }
+
+  .rep { font: 10.5px/1.4 var(--fuente); color: #111; padding-bottom: 8mm; }
+  .rep.rep-tecnico { page: tecnico; font-size: 9px; }
+  .rep h1 { font-size: 20px; margin: 2px 0 6px; }
+  .rep h2 { font-size: 13px; margin: 0 0 6px; color: var(--guinda); break-after: avoid; }
+  .rep h3 { font-size: 11px; margin: 10px 0 4px; break-after: avoid; }
+  .rep .sub { color: #555; }
+
+  .rep-cab { background: var(--guinda); color: #fff; padding: 9px 12px; border-radius: 6px; margin-bottom: 6px; }
+  .rep-marca { font-size: 10px; opacity: .9; letter-spacing: .02em; }
+  .rep-dummy { background: var(--ambar); color: #111; padding: 0 5px; border-radius: 3px; font-weight: 700; }
+  .rep-meta { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 10px; }
+  .rep-filtros-impresos { margin-top: 5px; font-size: 10px; }
+  .rep-franja { display: flex; flex-wrap: wrap; gap: 3px 16px; padding: 6px 10px; border: 1.5px solid var(--sin-cifrar); border-radius: 6px; background: #fff4f2; margin-bottom: 8px; }
+  .rep-pie { margin-top: 10px; font-size: 8.5px; color: #444; border-top: 1px solid #bbb; padding-top: 3px; break-inside: avoid; }   /* cierre del reporte; el pie de cada hoja va en @page */
+
+  .rep-g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px; }
+  .rep-g4.rep-hallazgos { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
+  .rep-g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rep .card { padding: 8px 10px; break-inside: avoid; }
+  .rep .kpi .t { font-size: 10px; } .rep .kpi .v { font-size: 22px; } .rep .kpi .s { font-size: 9.5px; }
+
+  .rep-sec { margin: 0 0 10px; break-inside: auto; }
+  .rep-sec:has(.dona-wrap), .rep-sec:has(.barra), .rep-sec:has(.pilas) { break-inside: avoid; }
+  .rep-saltar { break-before: page; }
+  .rep-ejecutivo .rep-sec { break-inside: avoid; }        /* el ejecutivo no parte sus secciones entre hojas */
+  .rep-nota, .rep .nota { font-size: 9px; color: #444; margin: 5px 0 0; }
+  .rep-aviso { font-size: 9px; font-weight: 600; margin: 4px 0 0; }
+  .rep-sub-esp { height: 8px; }
+  .rep-sublista { break-inside: auto; }
+
+  .rep .barra { height: 22px; }
+  .rep .leyenda { font-size: 9.5px; gap: 3px 12px; }
+  .rep .resumen-cifrado { font-size: 10px; margin-top: 4px; }
+  .rep .dona-wrap { gap: 12px; flex-wrap: nowrap; }
+  .rep .dona-wrap svg { width: 118px; height: 118px; }
+  .rep .dona-leyenda { font-size: 10px; gap: 4px; }
+  .rep .pilas { font-size: 10px; gap: 3px 8px; }
+  .rep .pila { height: 11px; }
+  .rep .pilas .et .sub, .rep .pilas .val .sub { font-size: 9px; }
+  .rep .leyenda-sup { font-size: 9.5px; margin-bottom: 6px; gap: 3px 10px; }
+
+  .rep-tabla { width: 100%; border-collapse: collapse; font-size: 9px; }
+  .rep-tabla th { background: #efe7da; text-align: left; padding: 3px 5px; border-bottom: 1.5px solid #bbb; font-size: 8.5px; }
+  .rep-tabla th.n, .rep-tabla td.n { text-align: right; }
+  .rep-tabla td { padding: 2.5px 5px; border-bottom: 1px solid #e4dccd; }
+  .rep-tabla thead { display: table-header-group; }
+  .rep-tabla tr { break-inside: avoid; }
+  .rep-tabla.rep-corta { width: 58%; }
+  .rep-kv td:first-child { width: 28%; font-weight: 600; background: #f7f2ea; }
+}

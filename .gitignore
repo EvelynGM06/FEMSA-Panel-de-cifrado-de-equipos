@@ -1,0 +1,6 @@
+# Salidas con datos reales (NDA): nunca al repositorio
+salidas/
+.venv/
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
