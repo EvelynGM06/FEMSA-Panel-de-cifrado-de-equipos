@@ -1,0 +1,21 @@
+# Configuración de la pantalla de carga. Todo corre en esta computadora.
+[server]
+address = "localhost"          # solo accesible desde este equipo (no desde la red)
+headless = false               # abre el navegador al iniciar
+maxUploadSize = 500            # MB por archivo
+fileWatcherType = "none"
+
+[browser]
+gatherUsageStats = false       # sin telemetría: los datos y el uso no salen de la computadora
+
+[client]
+toolbarMode = "minimal"        # sin menú de despliegue (Deploy)
+showErrorDetails = "none"
+
+[theme]
+# Mismos colores del Design System del panel (guinda de marca, fondo beige)
+primaryColor = "#7A1F33"
+backgroundColor = "#FAF7F2"
+secondaryBackgroundColor = "#F1EADF"
+textColor = "#242424"
+font = "sans serif"
